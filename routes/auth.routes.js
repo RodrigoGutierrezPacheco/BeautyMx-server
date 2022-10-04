@@ -15,6 +15,7 @@ const Session = require("../models/Session.model");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
+//http://localhost:5005/api/auth/session
 router.get("/session", (req, res) => {
   // we dont want to throw an error, and just maintain the user as null
   if (!req.headers.authorization) {
@@ -34,6 +35,7 @@ router.get("/session", (req, res) => {
     });
 });
 
+//http://localhost:5005/api/auth/signup
 router.post("/signup", isLoggedOut, (req, res) => {
   const { username, password } = req.body;
 
@@ -84,6 +86,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
           user: user._id,
           createdAt: Date.now(),
         }).then((session) => {
+					//Enviar el email de bienvenida
           res.status(201).json({ user, accessToken: session._id });
         });
       })
@@ -102,6 +105,7 @@ router.post("/signup", isLoggedOut, (req, res) => {
   });
 });
 
+//http://localhost:5005/api/auth/login
 router.post("/login", isLoggedOut, (req, res, next) => {
   const { username, password } = req.body;
 
@@ -148,6 +152,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     });
 });
 
+//http://localhost:5005/api/auth/logout
 router.delete("/logout", isLoggedIn, (req, res) => {
   Session.findByIdAndDelete(req.headers.authorization)
     .then(() => {
