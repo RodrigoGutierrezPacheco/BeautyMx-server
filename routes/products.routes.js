@@ -2,10 +2,25 @@ const router = require("express").Router()
 const fileUploader = require('../config/cloudinary.config');
 const Product = require("../models/Product.model")
 
+//All the products
+router.get("/:id",(req,res,next)=>{
+	const{id} = req.params
+	Product.findById(id)
+	.then(product =>{
+		res.json(product)
+	}) 
+	.catch(err => console.log(err))
+})
+
+//Upload File
+router.post("/upload-file",fileUploader.single("imageUrl") ,(req,res,next)=>{
+	res.json({imageUrl:req.file.path})
+})
+
 //CREATE a product
-router.post("/",fileUploader.single("image") ,(req,res,next)=>{
-	console.log(fileUploader)
-	const{productname,description,brand,categoryone,categorytwo,subcategory,price,image} = req.body
+router.post("/",(req,res,next)=>{
+	console.log(req.body)
+	const{productname,description,brand,categoryone,categorytwo,subcategory,price,imageUrl} = req.body
 	const product = {
 		productname,
 		description,
@@ -14,11 +29,11 @@ router.post("/",fileUploader.single("image") ,(req,res,next)=>{
 		categorytwo,
 		subcategory,
 		price,
-		image
+		imageUrl,
 	}
  Product.create(product)
  .then(createdProduct=>{
-	res.json(createdProduct)
+	res.json({createdProduct})
  })
  .catch(err=>console.log(err))
 })
@@ -32,18 +47,10 @@ router.get("/",(req,res,next)=>{
 	.catch(err=>console.log(err))
 })
 
-//product id
-router.get("/:id",(req,res,next)=>{
-	const{id} = req.params
-	Product.findById(id)
-	.then(product =>{
-		res.json(product)
-	}) 
-	.catch(err => console.log(err))
-})
 
 //UPDATE a product
-router.put("/:id",(req,res,next)=>{
+router.put("/:id",fileUploader.single("imageUrl"),(req,res,next)=>{
+	console.log("REQBODY---->",req.body)
   const {id} = req.params
 	Product.findByIdAndUpdate(id,req.body,{new: true})
 	.then(product => {

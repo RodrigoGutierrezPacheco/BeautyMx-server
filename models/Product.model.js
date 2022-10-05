@@ -13,32 +13,36 @@ const productSchema = new Schema({
 	},
 	brand:{
 		type: String,
-		enum:["anastasia","beautycreations","colourpop","elf","foreo","hudabeauty","morphe","theordinary","toofaced"],
+		enum:["Anastasia","Beauty Creations","Colourpop","Elf","Foreo","Huda Beauty","Morphe","The Ordinary","Too Faced"],
 		required: true
 	},
 	categoryone:{
 		type: String,
-		enum:["maquillaje","cuidadoparalapiel","otros"],
+		enum:["Maquillaje","Cuidado para la piel","Otros"],
 		required: true
 	},
 	categorytwo:{
 		type:String,
-		enum:["cara","ojos","labios","mejillas"],
+		enum:["Cara","Ojos","Labios","Mejillas"],
 		required: true
 	},
 	subcategory:{
 		type: String,
-		enum:["paletas","rimel","labial"],
+		enum:["Paletas","Rimel","Labial"],
 		required: true
 	},
 	price:{
 		type: Number,
 		required: true
 	},
-	image:{
+	imageUrl:{
 		type: String,
 		required: true
-	}
+	},
+	user:[{
+		type: Schema.Types.ObjectId,
+		ref:"Cart"
+	}]
 });
 
 const Products = model("Products", productSchema);
