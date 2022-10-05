@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const axios = require("axios")
 
 // ℹ️ Handles password encryption
 const bcrypt = require("bcrypt");
@@ -85,8 +86,37 @@ router.post("/signup", isLoggedOut, (req, res) => {
         Session.create({
           user: user._id,
           createdAt: Date.now(),
-        }).then((session) => {
+        })
+				.then((session) => {
 					//Enviar el email de bienvenida
+					//Confirmation signup email
+				const data ={
+					service_id:"service_a3iwfaq",
+					template_id:"template_nq34ag7",
+					user_id:"wpzB45htigxMvBv61",
+					template_params:{
+						nombre:"beautymx",
+						email: "rodrigogutierrezpacheco@gmail.com",
+					},
+					accessToken: "LV3Cx1thhUkxK7EFJ_0xu",
+				};
+				const url = "https://api.emailjs.com/api/v1.0/email/send"
+				axios({
+					method:"post",
+					url,
+					headers:{
+						"Content-Type": "application/json",
+					},
+					data: JSON.stringify(data),
+				})
+				.then((result)=>{
+					console.log("RESULTSSSSS--->",result);
+					console.log("correo enviado")
+				})
+				.catch((error)=>{
+					console.log("ERROR------>",error)
+					console.log("ERROR---------------------------------------------->",error)
+				})
           res.status(201).json({ user, accessToken: session._id });
         });
       })

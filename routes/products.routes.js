@@ -49,12 +49,33 @@ router.get("/",(req,res,next)=>{
 
 
 //UPDATE a product
-router.put("/:id",fileUploader.single("imageUrl"),(req,res,next)=>{
-	console.log("REQBODY---->",req.body)
-  const {id} = req.params
+// router.get("/:id",(req,res,next)=>{
+// 	const {id} = req.params
+// 	Product.findById(id)
+// 	.then(product =>{
+// 		console.log("Edita producto----->", product)
+// 		res.json(product)
+// 	})
+// 	.cath(error=>console.log(error))
+// })
+
+router.put("/:id",(req,res,next)=>{
+	const {id} = req.params
+	const{productname,description,brand,categoryone,categorytwo,subcategory,price,imageUrl} = req.body
+	const product = {
+		productname,
+		description,
+		brand,
+		categoryone,
+		categorytwo,
+		subcategory,
+		price,
+		imageUrl,
+	}
 	Product.findByIdAndUpdate(id,req.body,{new: true})
 	.then(product => {
-		res.json(product)
+		console.log("REQBODY---->",product)
+		res.json({product})
 	})
 	.catch(err => console.log(err))
 })
