@@ -90,13 +90,14 @@ router.post("/signup", isLoggedOut, (req, res) => {
 				.then((session) => {
 					//Enviar el email de bienvenida
 					//Confirmation signup email
+					console.log(session)
 				const data ={
 					service_id:"service_a3iwfaq",
 					template_id:"template_nq34ag7",
 					user_id:"wpzB45htigxMvBv61",
 					template_params:{
-						nombre:"beautymx",
-						email: "rodrigogutierrezpacheco@gmail.com",
+						nombre:user.username,
+						email: user.username,
 					},
 					accessToken: "LV3Cx1thhUkxK7EFJ_0xu",
 				};
